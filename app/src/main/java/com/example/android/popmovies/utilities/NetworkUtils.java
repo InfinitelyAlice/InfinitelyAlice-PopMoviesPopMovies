@@ -36,7 +36,7 @@ public final class NetworkUtils {
 
 
 
-    public static URL buildUrl(String apk_key, String order) {
+    public static URL buildUrl(String order, String apk_key) {
         Uri builtUri = Uri.parse(BASE_URL + order).buildUpon()
                 .appendQueryParameter(API_PARAM, apk_key)
                 .build();

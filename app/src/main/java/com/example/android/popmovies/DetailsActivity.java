@@ -18,7 +18,6 @@ public class DetailsActivity extends AppCompatActivity {
 
     private static final String TAG = DetailsActivity.class.getSimpleName();
 
-    // Set variables
     Context mContext;
     TextView mMovieTitle;
     TextView mMovieReleaseDate;

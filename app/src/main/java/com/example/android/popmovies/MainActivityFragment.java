@@ -20,28 +20,17 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class MainActivityFragment extends Fragment {
 
     private static final String TAG = MainActivityFragment.class.getSimpleName();
 
     GridView gridView;
+
     private static MovieImagesAdapter imagesAdapter;
 
-    /**
-     * ArrayList to store
-     * original title
-     * movie poster image thumbnail
-     * A plot synopsis (called overview in the api)
-     * user rating (called vote_average in the api)
-     * release date
-     */
     private static ArrayList<HashMap<String, String>> moviesInfo;
 
     public MainActivityFragment() {
-        //empty public constructor
     }
 
     @Override
@@ -50,47 +39,36 @@ public class MainActivityFragment extends Fragment {
 
         final View rootView = inflater.inflate(R.layout.gridview, container, false);
 
-        // Initialization and load images to show it in GridView
         if (moviesInfo == null) {
             moviesInfo = new ArrayList<>();
             imagesAdapter = new MovieImagesAdapter(getActivity(), moviesInfo);
-            //Calling the AsyncTask class to start to execute.
-            new FetchLoadingTask().execute(getString(R.string.sort_order_upcoming));
+            new FetchMoviesTask().execute(getString(R.string.sort_order_upcoming));
         }
 
-        // Get a reference to the ListView, and attach this adapter to it.
         gridView = rootView.findViewById(R.id.image_grid);
         gridView.setAdapter(imagesAdapter);
 
-        //When grid item is clicked
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 HashMap<String, String> currentData;
-                //Get item at position
                 currentData = moviesInfo.get(position);
-
-                //Pass the data to new activity "DetailsActivity"
                 Intent intent = new Intent(getActivity(), DetailsActivity.class);
                 intent.putExtra("currentMovieData", currentData);
-                //Start details activity
                 startActivity(intent);
             }
         });
         return rootView;
     }
 
+    public static class FetchMoviesTask extends AsyncTask<String, Void, ArrayList<HashMap<String, String>>> {
 
-    // AsyncTask<Params, Progress, Result>
-    public static class FetchLoadingTask extends AsyncTask<String, Void, ArrayList<HashMap<String, String>>> {
-
-        private String API_KEY = "";
+        private String API_KEY = "3ac64d01d1011b15e9f200670abe0b0d";
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
         }
 
-        //        Start loading images on background
         @Override
         protected ArrayList<HashMap<String, String>> doInBackground(String... params) {
 
@@ -100,54 +78,44 @@ public class MainActivityFragment extends Fragment {
 
             String sortOrder = params[0];
 
-            //build URL
-            URL requestUrl = NetworkUtils.buildUrl(API_KEY, sortOrder);
+            URL requestUrl = NetworkUtils.buildUrl(sortOrder, API_KEY);
 
-            // clear the data of ArrayList if it's not empty
             if (moviesInfo != null) {
                 moviesInfo.clear();
             }
 
             try {
-                //Store JsonResponse
                 String jsonResponse = NetworkUtils
                         .getResponseFromHttpUrl(requestUrl);
 
                 Log.v(TAG, "jsonResponse: " + jsonResponse);
 
-                //Find items in "Result"
                 JSONObject getMovieInfo = new JSONObject(jsonResponse);
-                JSONArray resultDetail = getMovieInfo.getJSONArray("results");
+                JSONArray resultInfo = getMovieInfo.getJSONArray("results");
+                Log.v(TAG, "JSON Result: " + resultInfo.toString());
 
-                Log.v(TAG, "JSON Result: " + resultDetail.toString());
+                for (int i = 0; i < resultInfo.length(); i++) {
 
-                // looping through All Contacts
-                for (int i = 0; i < resultDetail.length(); i++) {
-
-                    JSONObject r = resultDetail.getJSONObject(i);
+                    JSONObject r = resultInfo.getJSONObject(i);
 
                     String id = r.getString("id");
                     String original_title = r.getString("original_title");
                     String vote_average = r.getString("vote_average");
                     String overview = r.getString("overview");
                     String poster_path = r.getString("poster_path");
-                    String release_date = r.getString("release_date");
                     String imageUrl = "http://image.tmdb.org/t/p/w185/" + poster_path;
+                    String release_date = r.getString("release_date");
 
-                    HashMap<String, String> movieInfo = new HashMap<>();
-                    // adding each child node to HashMap key => value
-                    movieInfo.put("id", id);
-                    movieInfo.put("original_title", original_title);
-                    movieInfo.put("vote_average", vote_average);
-                    movieInfo.put("overview", overview);
-                    movieInfo.put("release_date", release_date);
-                    movieInfo.put("imageUrl", imageUrl);
-
-                    // adding contact to movieInfo list
-                    moviesInfo.add(movieInfo);
+                    HashMap<String, String> movieDetailInfo = new HashMap<>();
+                    movieDetailInfo.put("id", id);
+                    movieDetailInfo.put("original_title", original_title);
+                    movieDetailInfo.put("vote_average", vote_average);
+                    movieDetailInfo.put("overview", overview);
+                    movieDetailInfo.put("release_date", release_date);
+                    movieDetailInfo.put("imageUrl", imageUrl);
+                    moviesInfo.add(movieDetailInfo);
 
                 }
-//                Log.v(TAG, "MoviesInfo: "+ moviesInfo.toString());
                 return moviesInfo;
             } catch (Exception e) {
                 Log.e(TAG, "Json parsing error: " + e.getMessage());
@@ -156,13 +124,11 @@ public class MainActivityFragment extends Fragment {
             }
         }
 
-        // Post the loading data
         @Override
-        protected void onPostExecute(ArrayList<HashMap<String, String>> hashMaps) {
-            super.onPostExecute(hashMaps);
-            if (hashMaps != null) {
-//                Log.v(TAG, "onPost is executed" + hashMaps.toString());
-                imagesAdapter.setGridData(hashMaps);
+        protected void onPostExecute(ArrayList<HashMap<String, String>> movieDetailInfo) {
+            super.onPostExecute(movieDetailInfo);
+            if (movieDetailInfo != null) {
+                imagesAdapter.setGridData(movieDetailInfo);
             }
         }
     }

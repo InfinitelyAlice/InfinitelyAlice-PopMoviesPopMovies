@@ -27,20 +27,20 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_sort_toprated) {
-            Log.v(TAG, "sort_toprated item is tapped");
-            new MainActivityFragment.FetchLoadingTask().execute(getString(R.string.sort_order_topRated));
+            Log.v(TAG, "sort_toprated item is selected");
+            new MainActivityFragment.FetchMoviesTask().execute("top_rated");
             return true;
         }
 
         if (id == R.id.action_sort_popular) {
-            Log.v(TAG, "sort_popular item is tapped");
-            new MainActivityFragment.FetchLoadingTask().execute(getString(R.string.sort_order_popular));
+            Log.v(TAG, "sort_popular item is selected");
+            new MainActivityFragment.FetchMoviesTask().execute("popular");
             return true;
         }
 
         if (id == R.id.action_sort_upcoming) {
-            Log.v(TAG, "upcoming item is tapped");
-            new MainActivityFragment.FetchLoadingTask().execute(getString(R.string.sort_order_upcoming));
+            Log.v(TAG, "upcoming item is selected");
+            new MainActivityFragment.FetchMoviesTask().execute("upcoming");
             return true;
         }
         return super.onOptionsItemSelected(item);
