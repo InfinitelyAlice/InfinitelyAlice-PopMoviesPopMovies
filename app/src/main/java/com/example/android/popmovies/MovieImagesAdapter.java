@@ -54,15 +54,28 @@ public class MovieImagesAdapter extends ArrayAdapter<HashMap<String, String>> {
         // Adapters recycle views to AdapterViews.
         // If this is a new View object we're getting, then inflate the layout.
         // If not, this view already has the layout inflated from a previous call to getView,
+        View view;
+        ViewHolder viewHolder;
+        viewHolder = new ViewHolder();
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(
+            view = LayoutInflater.from(getContext()).inflate(
                     R.layout.image_item, parent, false);
+            viewHolder.iconView = (ImageView)view.findViewById(R.id.movie_image);
+            view.setTag(viewHolder);
+        }else {
+            view = convertView;
+            viewHolder = (ViewHolder) view.getTag();
         }
-
-        ImageView iconView = convertView.findViewById(R.id.movie_image);
         //Set image
-        Picasso.with(mContext).load(currentData.get("imageUrl")).into(iconView);
+        Picasso.with(mContext).load(currentData.get("imageUrl"))
+                                .placeholder(R.mipmap.img_one)
+                                .error(R.mipmap.img_two)
+                                .into(viewHolder.iconView);
 
-        return convertView;
+        return view;
+    }
+
+    class ViewHolder{
+        ImageView iconView;
     }
 }
