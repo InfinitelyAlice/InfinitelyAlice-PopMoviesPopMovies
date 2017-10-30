@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+      <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@color/colorPrimaryDark"
-        style="@style/CategoryStyle">
+          style="@style/CategoryStyle">
 
         <TextView
             android:id="@+id/mv_display_title"
@@ -32,7 +36,7 @@
                 style="@style/Widget.AppCompat.RatingBar.Small"
                 android:id="@+id/ratingBar"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"/>
             <TextView
                 android:id="@+id/mv_rating"
                 android:paddingStart="16dp"
@@ -41,30 +45,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
+      </LinearLayout>
 
-    </LinearLayout>
-
-
-    <ImageView
-        android:id="@+id/mv_image"
-        android:paddingTop="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_gravity="center"
-        android:contentDescription="@string/movieImage"/>
-
-    <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="165dp"
-        android:paddingBottom="16dp">
+        <ImageView
+             android:id="@+id/mv_image"
+             android:layout_margin="16dp"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:scaleType="centerCrop"
+             android:layout_gravity="center"
+             android:contentDescription="@string/movieImage"/>
 
         <TextView
             android:id="@+id/mv_overview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="start|center"
-            android:textAppearance="?android:textAppearanceMedium" />
-    </android.support.v4.widget.NestedScrollView>
+            android:padding="16dp" />
 
-</LinearLayout>
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

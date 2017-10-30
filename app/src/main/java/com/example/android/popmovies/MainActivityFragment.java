@@ -32,7 +32,6 @@ public class MainActivityFragment extends Fragment {
 
     public MainActivityFragment() {
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -80,7 +79,7 @@ public class MainActivityFragment extends Fragment {
 
             URL requestUrl = NetworkUtils.buildUrl(sortOrder, API_KEY);
 
-            if (moviesInfo != null) {
+            if (moviesInfo != null) {        //TODO 先清空数据，再获取。
                 moviesInfo.clear();
             }
 
@@ -90,7 +89,7 @@ public class MainActivityFragment extends Fragment {
 
                 Log.v(TAG, "jsonResponse: " + jsonResponse);
 
-                JSONObject getMovieInfo = new JSONObject(jsonResponse);
+                JSONObject getMovieInfo = new JSONObject(jsonResponse);//// // TODO: 2017/10/20 看是中括号还是大括号，圆的用object 
                 JSONArray resultInfo = getMovieInfo.getJSONArray("results");
                 Log.v(TAG, "JSON Result: " + resultInfo.toString());
 
@@ -104,7 +103,7 @@ public class MainActivityFragment extends Fragment {
                     String overview = r.getString("overview");
                     String poster_path = r.getString("poster_path");
                     String imageUrl = "http://image.tmdb.org/t/p/w185/" + poster_path;
-                    String release_date = r.getString("release_date");
+                    String release_date = r.getString("release_date");//// TODO: 2017/10/20 一律用getString
 
                     HashMap<String, String> movieDetailInfo = new HashMap<>();
                     movieDetailInfo.put("id", id);
@@ -128,7 +127,7 @@ public class MainActivityFragment extends Fragment {
         protected void onPostExecute(ArrayList<HashMap<String, String>> movieDetailInfo) {
             super.onPostExecute(movieDetailInfo);
             if (movieDetailInfo != null) {
-                imagesAdapter.setGridData(movieDetailInfo);
+                imagesAdapter.setGridData(movieDetailInfo);//// TODO: 2017/10/20 对imgesAdapter中Array<HashMap<String, String>> 类型的成员变量赋值
             }
         }
     }

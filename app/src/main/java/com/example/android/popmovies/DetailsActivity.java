@@ -13,18 +13,21 @@ import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 public class DetailsActivity extends AppCompatActivity {
 
     private static final String TAG = DetailsActivity.class.getSimpleName();
+    @BindView(R.id.mv_display_title) TextView mMovieTitle;
+    @BindView(R.id.mv_releaseDate) TextView mMovieReleaseDate;
+    @BindView(R.id.mv_overview) TextView mMovieOverview;
+    @BindView(R.id.mv_rating) TextView mRatingNumber;
+    @BindView(R.id.mv_image) ImageView mMovieImage;
+    @BindView(R.id.ratingBar) RatingBar mMovieRating;
 
     Context mContext;
-    TextView mMovieTitle;
-    TextView mMovieReleaseDate;
-    ImageView mMovieImage;
-    TextView mMovieOverview;
-    RatingBar mMovieRating;
-    TextView mRatingNumber;
 
     String mReleaseDate;
     String mImage;
@@ -38,18 +41,9 @@ public class DetailsActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-
-        mMovieTitle = (TextView) findViewById(R.id.mv_display_title);
-        mMovieReleaseDate = (TextView) findViewById(R.id.mv_releaseDate);
-        mMovieImage = (ImageView) findViewById(R.id.mv_image);
-        mMovieOverview = (TextView) findViewById(R.id.mv_overview);
-        mMovieRating = (RatingBar) findViewById(R.id.ratingBar);
-        mRatingNumber = (TextView) findViewById(R.id.mv_rating);
-
-
+        ButterKnife.bind(this);
         currentMovieData = (HashMap<String, String>) getIntent().getSerializableExtra("currentMovieData");
         Log.v(TAG, currentMovieData.get("original_title"));
-
 
         if (currentMovieData != null) {
             mTitle = currentMovieData.get("original_title");
