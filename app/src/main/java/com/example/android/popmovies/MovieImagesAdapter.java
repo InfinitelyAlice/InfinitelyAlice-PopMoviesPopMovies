@@ -60,9 +60,9 @@ public class MovieImagesAdapter extends ArrayAdapter<HashMap<String, String>> {
         }
         //Set image
         Picasso.with(mContext).load(currentData.get("imageUrl"))
-                                .placeholder(R.mipmap.img_one)
-                                .error(R.mipmap.img_two)
-                                .into(viewHolder.iconView);
+                .placeholder(R.mipmap.img_one)
+                .error(R.mipmap.img_two)
+                .into(viewHolder.iconView);
 
         return view;
     }

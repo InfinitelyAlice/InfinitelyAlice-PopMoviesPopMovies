@@ -43,7 +43,7 @@ public class DetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
         currentMovieData = (HashMap<String, String>) getIntent().getSerializableExtra("currentMovieData");
-        Log.v(TAG, currentMovieData.get("original_title"));
+        Log.d(TAG, currentMovieData.get("original_title"));
 
         if (currentMovieData != null) {
             mTitle = currentMovieData.get("original_title");

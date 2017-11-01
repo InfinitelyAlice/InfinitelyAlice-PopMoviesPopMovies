@@ -9,11 +9,13 @@ import android.view.MenuItem;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
+    private MainActivityFragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        fragment = new MainActivityFragment();
     }
 
     @Override
@@ -28,19 +30,19 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.action_sort_toprated) {
             Log.v(TAG, "sort_toprated item is selected");
-            new MainActivityFragment.FetchMoviesTask().execute("top_rated");
+            fragment.showTopRatingMovies();
             return true;
         }
 
         if (id == R.id.action_sort_popular) {
             Log.v(TAG, "sort_popular item is selected");
-            new MainActivityFragment.FetchMoviesTask().execute("popular");
+            fragment.showPopularMovies();
             return true;
         }
 
         if (id == R.id.action_sort_upcoming) {
             Log.v(TAG, "upcoming item is selected");
-            new MainActivityFragment.FetchMoviesTask().execute("upcoming");
+            fragment.showUpComingMovies();
             return true;
         }
         return super.onOptionsItemSelected(item);
